@@ -62,4 +62,4 @@ for i in range(0, 7*60):
             j.add(Node(a[num]))
             num += 1
     sorted(x, key=lambda k: k.size)
-    
+    0
