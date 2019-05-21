@@ -1,7 +1,7 @@
 import pandas as pd
 
 def fan1(x):
-    y1=0
+    y1=500
     for i in range(80-x):
         if(i==60-x):
             y1+=200
@@ -22,4 +22,4 @@ for i in range(20,61):
 name=['FirstYearToPay','income1','income2']
 
 test=pd.DataFrame(columns=name,data=l2)
-test.to_csv('D:/1/FirstYearToPay.csv')
+test.to_csv('D:/1/FirstYearToPay_2.csv')
