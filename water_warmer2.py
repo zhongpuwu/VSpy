@@ -15,7 +15,7 @@ environmental_temperature_winter = [
 l2 = []  # 存放最终结果
 temperature_summer = avg(environmental_temperature_summer)  # 用于计算第二问的结果
 temperature_winter = avg(environmental_temperature_winter)  # 用于计算第二问的结果
-top_heat=60
+top_heat=45
 bottom_heat=top_heat-5
 
 
@@ -26,7 +26,7 @@ def Radiation(T1, T2):  # 计算当前温度下的散热功率 第一个参数�
 def OutV(T1, T2, T3):  # 第一个参数是当前温度 第二个参数是室温 第三个是需要的水温 获取当前时刻下热水阀放水的流量
     return 8*0.00001*60*4200*(T3-T2)/(60-T2)
 
-T2 = temperature_winter  # 当前室温
+T2 = temperature_summer  # 当前室温
 l1 = [T2, 0]
 time=0
 
