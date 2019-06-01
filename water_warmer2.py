@@ -15,7 +15,8 @@ environmental_temperature_winter = [
 l2 = []  # 存放最终结果
 temperature_summer = avg(environmental_temperature_summer)  # 用于计算第二问的结果
 temperature_winter = avg(environmental_temperature_winter)  # 用于计算第二问的结果
-firstheat = 60  # 热水器的起始温度
+top_heat=60
+bottom_heat=top_heat-5
 
 
 def Radiation(T1, T2):  # 计算当前温度下的散热功率 第一个参数是当前温度 第二个参数是室温
@@ -29,20 +30,20 @@ T2 = temperature_winter  # 当前室温
 l1 = [T2, 0]
 time=0
 
-while(l1[0]<60):
+while(l1[0]<top_heat):
     Q=1500*1.0-Radiation(l1[0], T2)*1.0
     l1=[l1[0]+Q/(60*4200),l1[1]+Q]
     time+=1
 print(time)
 
-l1 = [60, 0]
+l1 = [top_heat, 0]
 flag = 0  # 加热判断
 time = 0
 
 for i in range(0, 900):  # 计算洗澡时的状态
-    if(l1[0] <= 55):
+    if(l1[0] <= bottom_heat):
         flag = 1
-    if(l1[0] >= 60):
+    if(l1[0] >= top_heat):
         flag = 0
     if(flag == 0):
         Q = 0-Radiation(l1[0], T2)*1.0+(T2-l1[0]) * \
@@ -56,17 +57,17 @@ for i in range(0, 900):  # 计算洗澡时的状态
 print(l1[0])
 print(time)
 
-l1[0]=55
+l1[0]=bottom_heat
 time=0
-while(l1[0]<=60):
+while(l1[0]<=top_heat):
     Q=1500*1.0-Radiation(l1[0], T2)*1.0
     l1=[l1[0]+Q/(60*4200),l1[1]+Q]
     time+=1
 print(time)
 
-l1[0]=60
+l1[0]=top_heat
 time=0
-while(l1[0]>=55):
+while(l1[0]>=bottom_heat):
     Q=-Radiation(l1[0], T2)*1.0
     l1=[l1[0]+Q/(60*4200),l1[1]+Q]
     time+=1
