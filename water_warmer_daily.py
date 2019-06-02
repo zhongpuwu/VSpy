@@ -31,55 +31,76 @@ def OutV(T1, T2, T3):  # 第一个参数是当前温度 第二个参数是室温
 
 
 T2 = temperature_summer  # 当前室温
-l1 = [top_heat, 0]
+l1 = [T2, 0]  # 起始温度是当前室温
 time = 0
+flag = -1  # 状态变化周期 分为4个状态 最后一种是无状态
 flags = 0  # 是否在洗澡
-flag = 0  # 是否在加热
 w_timer = 0  # 洗澡时间的倒计时
 
-for i in range(0, 24*60*60*7+1):
+for i in range(0, 24*60*60*7+1):#用m和current确定转折点
+    Q = -Radiation(l1[0], T2)*1.0  # 日常散热
+    l1 = [l1[0]+Q/(60*4200), 0]
     if(i % (24*60*60) == 0):
-        flags = 1
-        w_timer = 900
-    elif(w_timer < 2):
-        flags = 0
-    if(l1[0] < bottom_heat):  # 记录开始加热的时机
-        flag = 1
-        m = 2
-        if(m != current):
-            print(i)
+        current=-1
+        flag = 0
+        if(len(l) == 0):
+            l.append(i)
+        elif(len(l) == 2):
+            l2.append(l)
+            print(l[1]-l[0])
+            l = []
+            l.append(i)
+        print('开始加热')
+    if(l1[0] > top_heat):
+        m=0
+        if(m!=current):
+            current=0
+            flag = 1
+            flags = 1
+            w_timer = 900
+            if(len(l) == 1):
+                l.append(i)
+            print('结束加热')
+    if(l1[0] < bottom_heat and flags==1):
+        m=1
+        if(m!=current):
+            current=1
+            flag = 2
+            print('开始加热1')
             if(len(l) == 0):
                 l.append(i)
             elif(len(l) == 2):
                 l2.append(l)
-                print(l[1]-l[0])
                 l = []
-                l.append(i)
-            current = 2
-            print('开始加热')
-    if(l1[0] > top_heat):
-        flag = 0
-        m = 3
-        if(m != current):
-            print(i)
+                l.append(i)   
+    if(w_timer < 2 and flags==1):
+        m=2
+        if(m!=current):
+            current=2
+            flags=0
+            flag = 3
             if(len(l) == 1):
                 l.append(i)
-            current = 3
-            print('结束加热')
-    Q = -Radiation(l1[0], T2)*1.0
-    l1 = [l1[0]+Q/(60*4200), 0]
-    if(flags == 1):
-        Q = -(l1[0]-T2)*OutV(l1[0], T2, 37)/0.06
-        l1 = [l1[0]+Q/(60*4200), 0]
-        w_timer -= 1
-    if(flag == 1):
+            print('结束洗澡')
+    # 下面是具体动作
+    if(flag == 0):
         Q = 1500*1.0
         l1 = [l1[0]+Q/(60*4200), 0]
         time += 1
-print(time)
+    elif(flag == 1):
+        Q = -(l1[0]-T2)*OutV(l1[0], T2, 37)/0.06
+        l1 = [l1[0]+Q/(60*4200), 0]
+        w_timer -= 1
+    elif(flag == 2):
+        Q = -(l1[0]-T2)*OutV(l1[0], T2, 37)/0.06+1500*1.0
+        l1 = [l1[0]+Q/(60*4200), 0]
+        w_timer -= 1
+        time += 1
+
 print(l2)
+print(time)
 
 # 输出最终结果
 name = ['start_times', 'stop_times']
 test = pd.DataFrame(columns=name, data=l2)
-test.to_csv('D:/2/timely_summer_always.csv')
+test.to_csv('D:/2/timely_summer_daily.csv')
