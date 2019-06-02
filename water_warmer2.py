@@ -73,7 +73,13 @@ while(l1[0]>=bottom_heat):
     time+=1
 print(time)
 
-
+l1[0]=20
+time=0
+while(l1[0]<=60):
+    Q=-Radiation(l1[0], T2)*1.0+1500*1.0
+    l1=[l1[0]+Q/(60*4200),l1[1]+Q]
+    time+=1
+print(time)
 # # 数据输出部分
 # name = ['heaterTem', 'Power']
 # test = pd.DataFrame(columns=name, data=l2)

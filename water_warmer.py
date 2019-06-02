@@ -37,7 +37,7 @@ flags = 0  # 是否在洗澡
 flag = 0  # 是否在加热
 w_timer = 0  # 洗澡时间的倒计时
 
-for i in range(0, 24*60*60*7+1):
+for i in range(0, 24*60*60*7):
     if(i % (24*60*60) == 0):
         flags = 1
         w_timer = 900
