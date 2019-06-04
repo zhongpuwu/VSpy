@@ -47,10 +47,10 @@ for i in range(0, 900):  # 计算洗澡时的状态
         flag = 0
     if(flag == 0):
         Q = 0-Radiation(l1[0], T2)*1.0+(T2-l1[0]) * \
-            OutV(l1[0], T2, 42)/0.06  # 不加热时能量的变化
+            OutV(l1[0], T2, 37)/0.06  # 不加热时能量的变化
     if(flag == 1):
         Q = 0-Radiation(l1[0], T2)*1.0+(T2-l1[0]) * \
-            OutV(l1[0], T2, 42)/0.06+1500*1.0  # 加热时能量的变化
+            OutV(l1[0], T2, 37)/0.06+1500*1.0  # 加热时能量的变化
         time += 1
     l1 = [l1[0]+Q/(60*4200), l1[1]+Q]
     l2.append(l1)
@@ -80,7 +80,8 @@ while(l1[0]<=60):
     l1=[l1[0]+Q/(60*4200),l1[1]+Q]
     time+=1
 print(time)
-# # 数据输出部分
-# name = ['heaterTem', 'Power']
-# test = pd.DataFrame(columns=name, data=l2)
-# test.to_csv('D:/2/timely_heat2_winter.csv')
+
+# 数据输出部分
+name = ['heaterTem', 'Power']
+test = pd.DataFrame(columns=name, data=l2)
+test.to_csv('D:/2/timely_heat2_summer.csv')
